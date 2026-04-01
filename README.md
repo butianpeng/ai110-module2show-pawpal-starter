@@ -22,6 +22,14 @@ Your final app should:
 - Display the plan clearly (and ideally explain the reasoning)
 - Include tests for the most important scheduling behaviors
 
+## Features
+
+- Sorting by priority and duration
+- Conflict warnings for duplicate tasks
+- Daily recurrence logic for recurring tasks
+- Filter tasks by pet or completion status
+- Clean Streamlit UI with tables and warnings
+
 ## Getting started
 
 ### Setup

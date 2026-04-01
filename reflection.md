@@ -1,5 +1,6 @@
 # PawPal+ Project Reflection
 
+
 ## 1. System Design
 
 **a. Initial design**
@@ -28,23 +29,32 @@ classDiagram
     +name: str
     +time_available: int
     +add_pet()
+    +get_all_tasks()
   }
   class Pet {
     +name: str
     +type: str
     +add_task()
+    +get_all_tasks()
   }
   class Task {
     +name: str
     +duration: int
     +priority: int
+    +frequency: str
+    +completed: bool
     +mark_complete()
+    +next_occurrence()
   }
   class Scheduler {
     +tasks: list
     +constraints: dict
     +generate_plan()
     +sort_by_priority()
+    +sort_by_time()
+    +filter_by_pet()
+    +filter_incomplete()
+    +detect_conflicts()
   }
 ```
 
@@ -52,8 +62,6 @@ I designed four classes: Owner stores the user's name and available time.
 Pet stores the animal's name and type. Task stores a care activity with
 duration and priority. Scheduler takes a list of tasks and generates a
 sorted daily plan based on priority.
-
-**b. Design changes**
 
 **b. Design changes**
 
@@ -85,13 +93,17 @@ This is reasonable for a basic pet care app where simplicity matters.
 
 **a. How you used AI**
 
-- How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
-- What kinds of prompts or questions were most helpful?
+I used Claude throughout this project for design brainstorming, writing
+class skeletons, debugging indentation errors, and refactoring code.
+The most helpful prompts were specific ones like "add conflict detection
+to my Scheduler class" rather than vague ones.
 
 **b. Judgment and verification**
 
-- Describe one moment where you did not accept an AI suggestion as-is.
-- How did you evaluate or verify what the AI suggested?
+When Claude suggested the generate_plan() method, I verified it by
+running main.py and checking that Playtime was correctly skipped due
+to the time constraint. I didn't accept it blindly — I traced through
+the logic myself first.
 
 ---
 
@@ -99,13 +111,15 @@ This is reasonable for a basic pet care app where simplicity matters.
 
 **a. What you tested**
 
-- What behaviors did you test?
-- Why were these tests important?
+I tested task completion, task addition to a pet, sorting by duration,
+daily recurrence logic, and conflict detection. These were important
+because they cover the core scheduling behaviors the app depends on.
 
 **b. Confidence**
 
-- How confident are you that your scheduler works correctly?
-- What edge cases would you test next if you had more time?
+I am 4/5 confident the scheduler works correctly. Edge cases I would
+test next include: an owner with zero time available, a pet with no
+tasks, and two pets with tasks of the same name.
 
 ---
 
@@ -113,12 +127,18 @@ This is reasonable for a basic pet care app where simplicity matters.
 
 **a. What went well**
 
-- What part of this project are you most satisfied with?
+I am most satisfied with the scheduling logic. The generate_plan()
+method correctly filters by time and sorts by priority, which makes
+the output feel genuinely useful.
 
 **b. What you would improve**
 
-- If you had another iteration, what would you improve or redesign?
+I would add a start time field to Task so the schedule shows exact
+times like "9:00 AM - Walk (20 mins)" instead of just a list.
 
 **c. Key takeaway**
 
-- What is one important thing you learned about designing systems or working with AI on this project?
+I learned that designing the system on paper first (UML) made the
+coding much easier. AI tools are most useful when you already
+understand the structure — they speed up implementation but can't
+replace the design thinking.
