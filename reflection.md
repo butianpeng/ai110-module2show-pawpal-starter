@@ -55,8 +55,11 @@ sorted daily plan based on priority.
 
 **b. Design changes**
 
-- Did your design change during implementation?
-- If yes, describe at least one change and why you made it.
+**b. Design changes**
+
+I updated generate_plan() to filter tasks by time_available.
+The original version just sorted tasks without checking if they fit
+in the owner's available time. This was a logic gap spotted during review.
 
 ---
 
@@ -64,13 +67,17 @@ sorted daily plan based on priority.
 
 **a. Constraints and priorities**
 
-- What constraints does your scheduler consider (for example: time, priority, preferences)?
-- How did you decide which constraints mattered most?
+My scheduler considers time available and task priority.
+I chose time as the main constraint because a busy owner
+can't do everything. Priority decides the order so the
+most important tasks happen first.
 
 **b. Tradeoffs**
 
-- Describe one tradeoff your scheduler makes.
-- Why is that tradeoff reasonable for this scenario?
+My scheduler only checks for exact name matches as conflicts, not
+overlapping durations. This keeps the logic simple and avoids crashes,
+but means two different tasks at the same time won't be flagged.
+This is reasonable for a basic pet care app where simplicity matters.
 
 ---
 

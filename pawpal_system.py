@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from typing import List
+from datetime import date, timedelta
 
 @dataclass
 class Task:
@@ -13,6 +14,16 @@ class Task:
         """Mark this task as completed."""
         self.completed = True
 
+    def next_occurrence(self):
+        """Return the next due date based on frequency."""
+        today = date.today()
+        if self.frequency == "daily":
+            return today + timedelta(days=1)
+        elif self.frequency == "weekly":
+            return today + timedelta(weeks=1)
+        else:
+            return None
+        
     def __str__(self):
         """Return a readable string for this task."""
         return f"{self.name} ({self.duration} mins, priority {self.priority})"
@@ -69,3 +80,29 @@ class Scheduler:
                 plan.append(task)
                 time_left -= task.duration
         return plan
+
+    def sort_by_time(self):
+        """Sort tasks by duration, shortest first."""
+        return sorted(self.tasks, key=lambda t: t.duration)
+
+    def filter_by_pet(self, pet_name: str):
+        """Filter tasks belonging to a specific pet."""
+        for pet in self.owner.pets:
+            if pet.name == pet_name:
+                return pet.get_all_tasks()
+        return []
+
+    def filter_incomplete(self):
+        """Return only tasks that are not yet completed."""
+        return [t for t in self.tasks if not t.completed]
+    
+    def detect_conflicts(self):
+        """Warn if two tasks have the same name scheduled together."""
+        seen = []
+        conflicts = []
+        for task in self.tasks:
+            if task.name in seen:
+                conflicts.append(f"Conflict: '{task.name}' appears more than once!")
+            else:
+                seen.append(task.name)
+        return conflicts
