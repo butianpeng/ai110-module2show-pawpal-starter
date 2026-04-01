@@ -4,8 +4,54 @@
 
 **a. Initial design**
 
-- Briefly describe your initial UML design.
-- What classes did you include, and what responsibilities did you assign to each?
+Three core actions a user should be able to perform:
+
+1. Enter owner and pet info (name, pet type, preferences)
+2. Add or edit tasks (e.g. walk, feeding, meds) with duration and priority
+3. Generate and view a daily care plan with reasoning
+
+Main building blocks:
+
+- Owner: holds name and time available. Can add a pet and set preferences.
+- Pet: holds name, type, and age. Can add tasks.
+- Task: holds name, duration, and priority. Can be marked complete.
+- Scheduler: holds list of tasks and constraints. Can generate and sort the daily plan.
+
+```mermaid
+classDiagram
+  Owner "1" --> "1..*" Pet : has
+  Owner "1" --> "0..*" Task : owns
+  Pet "1" --> "0..*" Task : generates
+  Scheduler "1" --> "0..*" Task : schedules
+
+  class Owner {
+    +name: str
+    +time_available: int
+    +add_pet()
+  }
+  class Pet {
+    +name: str
+    +type: str
+    +add_task()
+  }
+  class Task {
+    +name: str
+    +duration: int
+    +priority: int
+    +mark_complete()
+  }
+  class Scheduler {
+    +tasks: list
+    +constraints: dict
+    +generate_plan()
+    +sort_by_priority()
+  }
+```
+
+I designed four classes: Owner stores the user's name and available time.
+Pet stores the animal's name and type. Task stores a care activity with
+duration and priority. Scheduler takes a list of tasks and generates a
+sorted daily plan based on priority.
 
 **b. Design changes**
 
